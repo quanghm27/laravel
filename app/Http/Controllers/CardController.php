@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Card;
 
+include ('App/CommonFunc/CommonFunc.php');
+include ('App/CommonFunc/CommonMsg.php');
 class CardController extends Controller {
+	
 	/**
 	 * Create new guest card
 	 *
@@ -13,75 +16,57 @@ class CardController extends Controller {
 	 * @return string
 	 */
 	public function createCard(Request $req) {
-		
 		$card = new Card ();
 		
 		// validate guest name
-		$name = $req->guest_name;
+		$name = $req->guestName;
 		
 		if ($name == null) {
-			// 1. check empty name
-			return response()->json([
-					'success'=>'false',
-					'errCode'=>'1',
-					'errMsg'=>'empty guest name'
-			]);
 			
-		} elseif (strlen($name) > 20) {
+			// 1. check empty name
+			$jsonString = createResMs ( ERR_REQUIRED_NAME_CODE, ERR_REQUIRED_NAME_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		} elseif (strlen ( $name ) > 20) {
+			
 			// 2. check length > 20
-			return response()->json([
-					'success'=>'false',
-					'errCode'=>'2',
-					'errMsg'=>'guest name more than 20 character'
-			]);	
+			$jsonString = createResMs ( ERR_LENGTH_NAME_CODE, ERR_LENGTH_NAME_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 		}
-
+		
 		// validate phone number
-		$phone = $req -> phone_number;
+		$phone = $req->phoneNumber;
 		
 		if ($phone == null) {
+			
 			// 1. check empty name
-			return response()->json([
-					'success'=>'false',
-					'errCode'=>'3',
-					'errMsg'=>'empty phone number'
-			]);
-				
-		} elseif (strlen($phone) > 11 || strlen($phone) < 9 ) {
-			// 2. check length
-			return response()->json([
-					'success'=>'false',
-					'errCode'=>'4',
-					'errMsg'=>'phone number must be 9 or 10 character'
-			]);
-		} elseif (!is_numeric($phone)) {
-			// 3. check numeric phone number
-			return response()->json([
-					'success'=>'false',
-					'errCode'=>'5',
-					'errMsg'=>'phone number must be numeric'
-			]);
+			$jsonString = createResMs ( ERR_REQUIRED_PHONE_CODE, ERR_REQUIRED_PHONE_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		} elseif (! is_numeric ( $phone )) {
+			// 2. check numeric phone number
+			$jsonString = createResMs ( ERR_NUMERIC_PHONE_CODE, ERR_NUMERIC_PHONE_MSG, null );
+			
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		} elseif (strlen ( $phone ) > 11 || strlen ( $phone ) < 9) {
+			// 3. check length
+			$jsonString = createResMs ( ERR_LENGTH_PHONE_CODE, ERR_LENGTH_PHONE_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 		}
 		
-			// 4. check duplicate phone number
-			$oldPhone = Card::Where ( 'phone_number', $phone )->get ()->toArray ();
-			
-			if (!$oldPhone == null) {
-				return response()->json([
-						'success'=>'false',
-						'errCode'=>'6',
-						'errMsg'=>'duplicate phone number'
-				]);
-			}
-
-		// Create Card code 
+		// 4. check duplicate phone number
+		$oldPhone = Card::Where ( 'phone_number', $phone )->get ()->toArray ();
+		
+		if (! $oldPhone == null) {
+			$jsonString = createResMs ( ERR_DUPLICATE_PHONE_CODE, ERR_DUPLICATE_PHONE_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		}
+		
+		// Create Card code
 		do {
 			// Create code and check duplicate
 			$code = $this->autoGenCardCode ();
 			$Oldcode = Card::Where ( 'card_code', $code )->get ()->toArray ();
-			
-		} while (!$Oldcode == null);
-
+		} while ( ! $Oldcode == null );
+		
 		// Set card properties to insert to DB
 		$card->guest_name = $name;
 		$card->phone_number = $phone;
@@ -90,11 +75,11 @@ class CardController extends Controller {
 		$card->save ();
 		
 		// Return card code to response
-		return response()->json([
-						'success'=>'true',
-						'cardCode'=> $code
-				]);
-		
+		$code = array (
+				'cardCode' => $code 
+		);
+		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $code );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
 	
 	/**
@@ -109,5 +94,4 @@ class CardController extends Controller {
 		
 		return $cardCode;
 	}
-
 }
