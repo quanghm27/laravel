@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Card;
 
-include ('App/CommonFunc/CommonFunc.php');
-include ('App/CommonFunc/CommonMsg.php');
 class CardController extends Controller {
 	
 	/**

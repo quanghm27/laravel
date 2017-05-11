@@ -30,4 +30,15 @@ define ( 'ERR_NOT_EXIST_PRODUCT_MSG', 'Product not exist' );
 
 define ('JSON' , ' "Content-Type", "application/json" ' ); 
 
+function createResMs($status, $message, $data) {
+	$json = (array (
+			'status' => $status,
+			'message' => $message,
+			'data' => $data
+	));
+
+	$jsonString = json_encode ( $json );
+
+	return $jsonString;
+}
 ?>

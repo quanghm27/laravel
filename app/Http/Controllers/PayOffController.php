@@ -6,8 +6,6 @@ use App\Card;
 use App\product;
 use Illuminate\Http\Request;
 
-include ('App/CommonFunc/CommonFunc.php');
-include ('App/CommonFunc/CommonMsg.php');
 class PayOffController extends Controller {
 	/**
 	 * Display a listing of the resource.
