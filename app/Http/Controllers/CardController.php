@@ -114,17 +114,6 @@ define ( 'ERR_LENGTH_PHONE_MSG', 'Phone number must be 9 or 10 character' );
 define ( 'ERR_DUPLICATE_PHONE_CODE', '6' );
 define ( 'ERR_DUPLICATE_PHONE_MSG', 'Duplicate phone number' );
 
-// Error case for pay off
-define ( 'ERR_NOT_EXIST_CARD_CODE', '7' );
-define ( 'ERR_NOT_EXIST_CARD_MSG', 'Card not exist' );
-
-define ( 'ERR_NOT_EXIST_PRODUCT_CODE', '8' );
-define ( 'ERR_NOT_EXIST_PRODUCT_MSG', 'Product not exist' );
-
-// header json
-
-define ('JSON' , ' "Content-Type", "application/json" ' );
-
 function createResMs($status, $message, $data) {
 	$json = (array (
 			'status' => $status,

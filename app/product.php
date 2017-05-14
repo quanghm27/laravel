@@ -9,7 +9,7 @@ class product extends Model
     //
     protected $table = 'product';
     
-    protected $fillable = ['name','description','price','quantity'];
+    protected $fillable = ['code','name','description','price','quantity'];
     
     public $timestamps = false;
 }

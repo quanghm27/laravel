@@ -16,7 +16,7 @@ class ProductController extends Controller
     {
         //
         $product = product::all();
-        return view('admin\product.list',compact('product'));
+        return view('admin.product.list',compact('product'));
     }
 
     /**
@@ -44,6 +44,15 @@ class ProductController extends Controller
     	$product -> description = $request -> productDescription;
     	$product -> price = $request -> productPrice;
     	$product -> quantity = $request -> productQuantity;
+    	
+    	// Create Card code
+    	do {
+    		// Create code and check duplicate
+    		$code = autoGenCardCode ();
+    		$Oldcode = product::Where ( 'code', $code )->get ()->toArray ();
+    	} while ( ! $Oldcode == null );
+    	$product -> code = $code;
+    	
     	$product -> save();
     	return redirect()-> route('product.index');
     }
@@ -69,7 +78,7 @@ class ProductController extends Controller
     {
         //
     	$data = product::FindOrFail($id);
-    	return view('admin\product.edit', compact('data'));
+    	return view('admin.product.edit', compact('data'));
     }
 
     /**
@@ -105,4 +114,17 @@ class ProductController extends Controller
     	
     	return redirect() -> route('product.index');
     }
+}
+
+/**
+ * Auto generate code for new card
+ *
+ * @return string Card code
+ */
+function autoGenCardCode() {
+	$head = 'P';
+	$tail = rand ( 100, 999 );
+	$cardCode = $head . $tail;
+
+	return $cardCode;
 }
