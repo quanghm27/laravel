@@ -113,25 +113,15 @@ class AuthenticateController extends Controller {
 		// verify the credentials and create a token for the user
 		if (! $token = JWTAuth::attempt ( $credentials )) {
 			
-			$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
+			$jsonString = createResMsLogin ( SUCCESS_CODE, SUCCESS_MSG, null );
 		} else {
 			
-			$jsonString = createResMs ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
+			$jsonString = createResMsLogin ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
 		}
 		
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
-	function createResMs($status, $message, $data) {
-		$json = (array (
-				'status' => $status,
-				'message' => $message,
-				'data' => $data 
-		));
-		
-		$jsonString = json_encode ( $json );
-		
-		return $jsonString;
-	}
+	
 	public function register() {
 	}
 }
@@ -143,3 +133,22 @@ define ( 'SUCCESS_MSG', 'Success' );
 // Error case
 define ( 'INVALID_CREDENTIALS_CODE', '10' );
 define ( 'INVALID_CREDENTIALS_MSG', 'Invalid credentials' );
+
+/**
+ * 
+ * @param unknown $status
+ * @param unknown $message
+ * @param unknown $data
+ * @return string
+ */
+function createResMsLogin($status, $message, $data) {
+	$json = (array (
+			'status' => $status,
+			'message' => $message,
+			'data' => $data
+	));
+
+	$jsonString = json_encode ( $json );
+
+	return $jsonString;
+}
