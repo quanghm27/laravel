@@ -113,10 +113,10 @@ class AuthenticateController extends Controller {
 		// verify the credentials and create a token for the user
 		if (! $token = JWTAuth::attempt ( $credentials )) {
 			
-			$jsonString = createResMsLogin ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
+			$jsonString = createResMsLogin ( SUCCESS_CODE, SUCCESS_MSG, null );
 		} else {
 			
-			$jsonString = createResMsLogin ( SUCCESS_CODE, SUCCESS_MSG, null );
+			$jsonString = createResMsLogin ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
 		}
 		
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
