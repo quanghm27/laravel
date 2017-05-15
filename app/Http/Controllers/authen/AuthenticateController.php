@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuthExceptions\JWTException;
 use App\User;
+use function App\Http\Controllers\createResMs;
 
 class AuthenticateController extends Controller {
 	/**
@@ -110,23 +111,35 @@ class AuthenticateController extends Controller {
 		$credentials = $request->only ( 'email', 'password' );
 		
 		// verify the credentials and create a token for the user
-		if (!$token = JWTAuth::attempt($credentials )) {
-			return response ()->json ( [
-					'success' => 'false',
-					'errCode' => '401',
-					'errMsg' => 'invalid credentials' 
-			] )->header ( 'Content-Type', 'application/json' );
+		if (! $token = JWTAuth::attempt ( $credentials )) {
+			
+			$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
 		} else {
 			
-			return response ()->json ( [
-					'success' => 'true',
-					'token' => $token
-			] )->header ( 'Content-Type', 'application/json' );
+			$jsonString = createResMs ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
 		}
 		
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
-	
-	public  function register(){
+	function createResMs($status, $message, $data) {
+		$json = (array (
+				'status' => $status,
+				'message' => $message,
+				'data' => $data 
+		));
 		
+		$jsonString = json_encode ( $json );
+		
+		return $jsonString;
+	}
+	public function register() {
 	}
 }
+
+// Success case
+define ( 'SUCCESS_CODE', '0' );
+define ( 'SUCCESS_MSG', 'Success' );
+
+// Error case
+define ( 'INVALID_CREDENTIALS_CODE', '10' );
+define ( 'INVALID_CREDENTIALS_MSG', 'Invalid credentials' );

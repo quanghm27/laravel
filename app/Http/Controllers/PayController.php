@@ -171,6 +171,7 @@ function insertOrder($userId, $cardCode, $total) {
 	$bill->shop_id = $user->id;
 	$bill->card_code = $cardCode;
 	$bill->total = $total;
+	$bill->ins_date = date('Y-m-d');
 	
 	$bill->save ();
 	return $bill->id;

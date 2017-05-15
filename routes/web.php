@@ -36,6 +36,7 @@ Route::resource('auth/login', 'authen\AuthenticateController');
 Route::post('auth/login', 'authen\AuthenticateController@login');
 Route::post('card/create', 'CardController@createCard');
 Route::post('pay','PayController@postPayOff');
+Route::get('bills','BillController@getBills');
 
 
 
