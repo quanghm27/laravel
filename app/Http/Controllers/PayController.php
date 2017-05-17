@@ -197,7 +197,6 @@ function insertOrderDetail($productArr, $billId) {
 		);
 		
 		// decrease number of product
-	
 		$product = product::Where ( 'code', '=', $item ['productCode'] )->get()->first();
 		$product->quantity -= $item ['quantity'];
 		$product-> save();
