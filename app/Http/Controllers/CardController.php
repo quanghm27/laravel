@@ -25,7 +25,7 @@ class CardController extends Controller {
 			// 1. check empty name
 			$jsonString = createResMs ( ERR_REQUIRED_NAME_CODE, ERR_REQUIRED_NAME_MSG, null );
 			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
-		} elseif (strlen ( $name ) > 20) {
+		} elseif (strlen ( $name ) > 225) {
 			
 			// 2. check length > 20
 			$jsonString = createResMs ( ERR_LENGTH_NAME_CODE, ERR_LENGTH_NAME_MSG, null );

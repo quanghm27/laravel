@@ -15,29 +15,35 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-	Route::resource('admin/shop','CuaHangController');
-	Route::resource('admin/payOff','PayOffController');
+Route::resource('admin/shop','CuaHangController');
+Route::resource('admin/payOff','PayOffController');
 
-	Route::group(['middleware' => 'cors'], function()
-	{
-		Route::resource('admin/shop', 'CuaHangController');
-	});
-
+Route::group(['middleware' => 'cors'], function()
+{
 	Route::resource('admin/shop', 'CuaHangController');
+});
 
-	Route::resource('admin/product','ProductController');
+Route::resource('admin/shop', 'CuaHangController');
 
-	Route::get('admin/', function(){
-		return view('admin.layout.index');
-	});
+Route::resource('admin/product','ProductController');
+
+Route::get('admin/', function(){
+	return view('admin.layout.index');
+});
 
 
-		Route::resource('auth/login', 'authen\AuthenticateController');
-		Route::post('login', 'authen\AuthenticateController@login');
-		Route::post('card/create', 'CardController@createCard');
-		Route::post('pay','PayController@postPayOff');
-		Route::get('bills','BillController@getBills');
-		Route::resource('card', 'CardController');
-		Route::post('card/all', 'CardController@getCards');
+Route::resource('auth/login', 'authen\AuthenticateController');
+Route::post('login', 'authen\AuthenticateController@login');
+Route::post('signUp', 'authen\SignUpController@postCreate');
+
+Route::post('card/create', 'CardController@createCard');
+Route::resource('card', 'CardController');
+Route::post('card/all', 'CardController@getCards');
+
+
+Route::post('pay','PayController@postPayOff');
+
+Route::get('bills','BillController@getBills');
+		
 
 
