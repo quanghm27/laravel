@@ -110,13 +110,22 @@ class AuthenticateController extends Controller {
 		// return response()->json($user);
 		$credentials = $request->only ( 'email', 'password' );
 		
+		
+		
 		// verify the credentials and create a token for the user
 		if (! $token = JWTAuth::attempt ( $credentials )) {
 			
+			
 			$jsonString = createResMsLogin ( INVALID_CREDENTIALS_CODE, INVALID_CREDENTIALS_MSG, null );
 		} else {
+			$userId = User::Where('email', '=', $request->email)->value('id');
+			$userName = User::Where('email', '=', $request->email)->value('name');
 			
-			$jsonString = createResMsLogin ( SUCCESS_CODE, SUCCESS_MSG, null );
+			$data = array(
+					'shopId' => $userId,
+					'shopName'=> $userName
+			);
+			$jsonString = createResMsLogin ( SUCCESS_CODE, SUCCESS_MSG, $data );
 		}
 		
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
