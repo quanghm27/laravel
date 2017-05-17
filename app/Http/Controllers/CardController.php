@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Card;
+use App\Card_manager;
 
 class CardController extends Controller {
 	
@@ -72,10 +73,23 @@ class CardController extends Controller {
 		
 		$card->save ();
 		
+		// store shop insert card
+		$cardManager = new Card_manager ();
+		
+		$cardId = $card->id;
+		$shopId = $req->shopId;
+		
+		$cardManager->shop_id = $shopId;
+		$cardManager->card_id = $cardId;
+		$cardManager->ins_date = date ( 'Y-m-d' );
+		
+		$cardManager->save ();
+		
 		// Return card code to response
 		$code = array (
 				'cardCode' => $code 
 		);
+		
 		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $code );
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
@@ -92,6 +106,106 @@ class CardController extends Controller {
 		
 		return $cardCode;
 	}
+	
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function getCards(Request $req) {
+		
+		$shop_id = $req->shopId;
+		// Get all card in DB
+		$dataArray = [];
+		$card = Card_manager::Where('shop_id' , '=', $shop_id)
+									->join ( 'card', 'card_manager.card_id', '=', 'card.id' )
+									->select ( 'card.*' )
+									->get ();
+		
+		foreach ( $card as $item ) {
+			$dataArray [] = array (
+					'cardId' => $item->id,
+					'cardCode' => $item->card_code,
+					'guestName' => $item->guest_name,
+					'phoneNumber' => $item->phone_number,
+					'points' => $item->points 
+			);
+		}
+		
+		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $dataArray );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+	}
+	
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create() {
+		// Them mot shop
+	}
+	
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param \Illuminate\Http\Request $request        	
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request) {
+		//
+	}
+	
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param int $id        	
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show($id) {
+		//
+	}
+	
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param int $id        	
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id) {
+	}
+	
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param \Illuminate\Http\Request $request        	
+	 * @param int $id        	
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id) {
+		//
+	}
+	
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param int $id        	
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id) {
+		//
+		$card = Card::findOrFail ( $id );
+		
+		if ($card != null) {
+			$data = array (
+					'cardCode' => $card->card_code 
+			);
+		}
+		
+		$card->delete ();
+		
+		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $data );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+	}
 }
 
 // Success case
@@ -100,28 +214,23 @@ define ( 'SUCCESS_MSG', 'Success' );
 
 // Error case for create card
 // Guest name
-define ( 'ERR_REQUIRED_NAME_CODE', '1' );
-define ( 'ERR_REQUIRED_NAME_MSG', 'Empty guest name' );
 define ( 'ERR_LENGTH_NAME_CODE', '2' );
 define ( 'ERR_LENGTH_NAME_MSG', 'Guest name must less than 20 character' );
 // Phone number
-define ( 'ERR_REQUIRED_PHONE_CODE', '3' );
-define ( 'ERR_REQUIRED_PHONE_MSG', 'Empty phone number' );
 define ( 'ERR_NUMERIC_PHONE_CODE', '4' );
 define ( 'ERR_NUMERIC_PHONE_MSG', 'Phone number must be numeric' );
 define ( 'ERR_LENGTH_PHONE_CODE', '5' );
 define ( 'ERR_LENGTH_PHONE_MSG', 'Phone number must be 9 or 10 character' );
 define ( 'ERR_DUPLICATE_PHONE_CODE', '6' );
 define ( 'ERR_DUPLICATE_PHONE_MSG', 'Duplicate phone number' );
-
 function createResMs($status, $message, $data) {
 	$json = (array (
 			'status' => $status,
 			'message' => $message,
-			'data' => $data
+			'data' => $data 
 	));
-
+	
 	$jsonString = json_encode ( $json );
-
+	
 	return $jsonString;
 }

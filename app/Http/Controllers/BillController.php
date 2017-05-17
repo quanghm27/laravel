@@ -7,25 +7,30 @@ use App\bill;
 
 class BillController extends Controller {
 	/**
-	 * 
+	 *
 	 * @param Request $req
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function getBills(Request $req) {
 		$shopId = $req->userId;
+
+		if  ($shopId == null) {
+			$jsonString = createResMsBill ( STATUS_EMPTY_PARAM_CODE, STATUS_EMPTY_PARAM_MSG, null );
+			return response( $jsonString )->header ( 'Content-Type', 'application/json' );
+		}
 		// get shop bills from database
 		$bills = bill::select ('*' )->where ( 'shop_id', $shopId )->get ()->toArray ();
-		
+
 		if (empty ( $bills )) {
-			$jsonString = createResMsBill ( STATUS_EMPTY_CODE, STATUS_EMPTY_MSG, null );
+			$jsonString = createResMsBill ( STATUS_EMPTY_BILLS_CODE, STATUS_EMPTY__BILLS_MSG, null );
 		} else {
 			$dataArray = createBillsArray($bills);
 			$jsonString = createResMsBill ( STATUS_EXIST_CODE, STATUS_EXIST_MSG, $dataArray );
 		}
-		
+
 		return response( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
-	
+
 }
 
 
@@ -34,24 +39,27 @@ class BillController extends Controller {
  */
 
 // value for points of member card
-define ( 'STATUS_EMPTY_CODE', '11' );
+define ( 'STATUS_EMPTY_BILLS_CODE', '11' );
 define ( 'STATUS_EXIST_CODE', '12' );
-define ( 'STATUS_EMPTY_MSG', 'Not exist bills' );
+define ( 'STATUS_EMPTY_PARAM_CODE', '13' );
+
+define ( 'STATUS_EMPTY__BILLS_MSG', 'Not exist bills' );
 define ( 'STATUS_EXIST_MSG', 'Exist bills' );
+define ( 'STATUS_EMPTY_PARAM_MSG', 'Empty shop id' );
 
 function createBillsArray($bills){
-	
+
 	$dataArray = array();
-	
+
 	// convert array from DB to json array
 	foreach ($bills as $item) {
 		$dataArray[] = array(
 				'cardCode'=>$item['card_code'],
 				'total'=>$item['total'],
 				'date'=>$item['ins_date']
-		); 
+		);
 	}
-	
+
 	return $dataArray;
 }
 /**
