@@ -197,7 +197,7 @@ class CardController extends Controller {
 		
 		if ($card != null) {
 			$data = array (
-					'cardCode' => $card->card_code 
+				'cardCode' => $card->card_code 
 			);
 		}
 		

@@ -37,7 +37,7 @@ Route::post('login', 'authen\AuthenticateController@login');
 Route::post('signUp', 'authen\SignUpController@postCreate');
 
 Route::post('card/create', 'CardController@createCard');
-Route::resource('card', 'CardController');
+Route::post('card/delete', 'CardController@destroy');
 Route::post('card/all', 'CardController@getCards');
 
 
