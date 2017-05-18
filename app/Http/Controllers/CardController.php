@@ -198,15 +198,13 @@ class CardController extends Controller {
 		
 		$card = Card::findOrFail ( $cardId );
 		
-		if ($card != null) {
-			$data = array (
-				'cardCode' => $card->card_code 
-			);
-		}
+		$card_manager = Card_manager::Where('card_id', $cardId)->firstOrFail();
+		
 		
 		$card->delete ();
+		$card_manager->delete();
 		
-		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $data );
+		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
 }
