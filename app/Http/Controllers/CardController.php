@@ -72,11 +72,10 @@ class CardController extends Controller {
 		$card->card_code = $code;
 		
 		$card->save ();
+		$cardId = $card->id;
 		
 		// store shop insert card
 		$cardManager = new Card_manager ();
-		
-		$cardId = $card->id;
 		$shopId = $req->shopId;
 		
 		$cardManager->shop_id = $shopId;
