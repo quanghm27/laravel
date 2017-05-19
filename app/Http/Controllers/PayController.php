@@ -76,7 +76,7 @@ class PayController extends Controller {
 		// Check exist Card
 		if (! Card::Where ( 'card_code', '=', $request->cardCode )->exists ()) {
 			$code = array (
-					'cardCode' => $request->cardCode 
+				'cardCode' => $request->cardCode 
 			);
 			$jsonString = createResMs ( ERR_NOT_EXIST_CARD_CODE, ERR_NOT_EXIST_CARD_MSG, $code );
 			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
@@ -132,9 +132,28 @@ class PayController extends Controller {
 		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
+	
+	public function checkCardExist(Request $request) {
+		
+		// get card code from request
+		$cardCode = $request->cardCode;
+		
+		// Check exist Card
+		if (! Card::Where ( 'card_code', '=', $request->cardCode )->exists ()) {
+			$code = array (
+				'cardCode' => $request->cardCode 
+			);
+			
+			$jsonString = createResMs ( ERR_NOT_EXIST_CARD_CODE, ERR_NOT_EXIST_CARD_MSG, $code );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		}
+		
+		$jsonString = createResMs (SUCCESS_CODE , SUCCESS_MSG , null );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+	}
 }
 
-
+	
 /**
  * Calculate total price
  * 
