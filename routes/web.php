@@ -38,6 +38,7 @@ Route::post('signUp', 'authen\SignUpController@postCreate');
 
 Route::post('card/create', 'CardController@createCard');
 Route::post('card/delete', 'CardController@destroy');
+Route::post('card/update', 'CardController@updateCard');
 Route::post('card/all', 'CardController@getCards');
 
 Route::get('pay/checkCard', 'PayController@checkCardExist');

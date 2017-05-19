@@ -135,43 +135,6 @@ class CardController extends Controller {
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
 	
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create() {
-		// Them mot shop
-	}
-	
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param \Illuminate\Http\Request $request        	
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request) {
-		//
-	}
-	
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param int $id        	
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id) {
-		//
-	}
-	
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param int $id        	
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id) {
-	}
 	
 	/**
 	 * Update the specified resource in storage.
@@ -180,8 +143,69 @@ class CardController extends Controller {
 	 * @param int $id        	
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id) {
+	public function updateCard(Request $request) {
+		
 		//
+		$cardId = $request->cardId;
+		
+		$card = Card::Where('id', '=', $cardId)->first();
+		
+		if ($card !== null) {
+			
+			// Get guest name
+			$guestName = $request -> guestName;
+			
+			if ($guestName == null) {
+					
+				// 1. check empty name
+				$jsonString = createResMs ( ERR_REQUIRED_NAME_CODE, ERR_REQUIRED_NAME_MSG, null );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			} elseif (strlen ( $guestName ) > 225) {
+					
+				// 2. check length > 20
+				$jsonString = createResMs ( ERR_LENGTH_NAME_CODE, ERR_LENGTH_NAME_MSG, null );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			}
+			
+			// Get phone number
+			$phone = $request -> phoneNumber;
+			
+			if ($phone == null) {
+					
+				// 1. check empty name
+				$jsonString = createResMs ( ERR_REQUIRED_PHONE_CODE, ERR_REQUIRED_PHONE_MSG, null );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			} elseif (! is_numeric ( $phone )) {
+				// 2. check numeric phone number
+				$jsonString = createResMs ( ERR_NUMERIC_PHONE_CODE, ERR_NUMERIC_PHONE_MSG, null );
+					
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			} elseif (strlen ( $phone ) > 10 || strlen ( $phone ) < 9) {
+				// 3. check length
+				$jsonString = createResMs ( ERR_LENGTH_PHONE_CODE, ERR_LENGTH_PHONE_MSG, null );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			}
+			
+			// 4. check duplicate phone number
+			$oldPhone = Card::Where ( 'phone_number', $phone )->get ()->toArray ();
+			
+			if (! $oldPhone == null) {
+				$jsonString = createResMs ( ERR_DUPLICATE_PHONE_CODE, ERR_DUPLICATE_PHONE_MSG, null );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			}
+			
+			// save card updated
+			$card -> phone_number = $phone;
+			$card -> guest_name = $guestName;
+			$card -> save();
+			
+			// return JSON
+			$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
+			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+		}
+		
+		$jsonString = createResMs ( ERR_CARD_ID_NOT_EXIST_CODE, ERR_CARD_ID_NOT_EXIST_MSG, null );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
 	
 	/**
@@ -214,16 +238,28 @@ define ( 'SUCCESS_CODE', '0' );
 define ( 'SUCCESS_MSG', 'Success' );
 
 // Error case for create card
+define ( 'ERR_REQUIRED_NAME_CODE', '1' );
+define ( 'ERR_REQUIRED_NAME_MSG', 'Guest name is empty' );
+
 // Guest name
 define ( 'ERR_LENGTH_NAME_CODE', '2' );
-define ( 'ERR_LENGTH_NAME_MSG', 'Guest name must less than 20 character' );
+define ( 'ERR_LENGTH_NAME_MSG', 'Guest name must less than 225 character' );
+
 // Phone number
+define ( 'ERR_REQUIRED_PHONE_CODE','3' );
+define ( 'ERR_REQUIRED_PHONE_MSG', 'Phone number is empty' );
 define ( 'ERR_NUMERIC_PHONE_CODE', '4' );
 define ( 'ERR_NUMERIC_PHONE_MSG', 'Phone number must be numeric' );
 define ( 'ERR_LENGTH_PHONE_CODE', '5' );
 define ( 'ERR_LENGTH_PHONE_MSG', 'Phone number must be 9 or 10 character' );
 define ( 'ERR_DUPLICATE_PHONE_CODE', '6' );
 define ( 'ERR_DUPLICATE_PHONE_MSG', 'Duplicate phone number' );
+
+// Card id not exist (case update)
+define ( 'ERR_CARD_ID_NOT_EXIST_CODE','7' );
+define ( 'ERR_CARD_ID_NOT_EXIST_MSG', 'Card id not exist' );
+
+
 function createResMs($status, $message, $data) {
 	$json = (array (
 			'status' => $status,
