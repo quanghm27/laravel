@@ -45,7 +45,7 @@ class CardController extends Controller {
 			$jsonString = createResMs ( ERR_NUMERIC_PHONE_CODE, ERR_NUMERIC_PHONE_MSG, null );
 			
 			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
-		} elseif (strlen ( $phone ) > 11 || strlen ( $phone ) < 9) {
+		} elseif (strlen ( $phone ) > 10 || strlen ( $phone ) < 9) {
 			// 3. check length
 			$jsonString = createResMs ( ERR_LENGTH_PHONE_CODE, ERR_LENGTH_PHONE_MSG, null );
 			return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
