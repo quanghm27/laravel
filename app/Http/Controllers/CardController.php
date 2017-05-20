@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Card;
 use App\Card_manager;
 use Illuminate\Support\Facades\DB;
-
 class CardController extends Controller {
 	
 	/**
@@ -223,19 +220,15 @@ class CardController extends Controller {
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
 }
-
 // Success case
 define ( 'SUCCESS_CODE', '0' );
 define ( 'SUCCESS_MSG', 'Success' );
-
 // Error case for create card
 define ( 'ERR_REQUIRED_NAME_CODE', '1' );
 define ( 'ERR_REQUIRED_NAME_MSG', 'Guest name is empty' );
-
 // Guest name
 define ( 'ERR_LENGTH_NAME_CODE', '2' );
 define ( 'ERR_LENGTH_NAME_MSG', 'Guest name must less than 225 character' );
-
 // Phone number
 define ( 'ERR_REQUIRED_PHONE_CODE', '3' );
 define ( 'ERR_REQUIRED_PHONE_MSG', 'Phone number is empty' );
@@ -245,7 +238,6 @@ define ( 'ERR_LENGTH_PHONE_CODE', '5' );
 define ( 'ERR_LENGTH_PHONE_MSG', 'Phone number must be 9 or 10 character' );
 define ( 'ERR_DUPLICATE_PHONE_CODE', '6' );
 define ( 'ERR_DUPLICATE_PHONE_MSG', 'Duplicate phone number' );
-
 // Card id not exist (case update)
 define ( 'ERR_CARD_ID_NOT_EXIST_CODE', '7' );
 define ( 'ERR_CARD_ID_NOT_EXIST_MSG', 'Card id not exist' );
