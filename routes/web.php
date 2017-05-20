@@ -45,7 +45,8 @@ Route::get('pay/checkCard', 'PayController@checkCardExist');
 
 Route::post('pay','PayController@postPayOff');
 
-Route::get('bills','BillController@getBills');
+Route::post('bill/all','BillController@getBills');
+Route::post('bill/complete','BillController@getBillComplete');
 		
 
 
