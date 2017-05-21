@@ -65,6 +65,33 @@ class BillController extends Controller {
 		$jsonString = createResMsBill ( SUCCESS_CODE, SUCCESS_MSG, $resData );
 		return response( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
+	
+	public function getBillDetail(Request $req){
+		
+		$billId = $req->billId;
+		
+		$bill = DB::table('bill')
+		->where('ID',$billId)
+		->first();
+		
+		$total = $bill->total;
+		$date = $bill->ins_date;
+		
+		$billDetail = DB::table('bill_detail')
+			->join('product', 'bill_detail.product_id', '=', 'product.code')
+			->where('bill_id', $billId)
+			->select('product.name', 'product.price', 'product.description','bill_detail.product_quantity')
+			->get();
+		
+		$resData = array (
+				'billDate' => $date,
+				'billTotal' => $total,
+				'billData' => createBillDetailArray($billDetail)
+		);
+		
+		$jsonString = createResMsBill ( SUCCESS_CODE, SUCCESS_MSG, $resData );
+		return response( $jsonString )->header ( 'Content-Type', 'application/json' );
+	}
 }
 
 
@@ -101,6 +128,7 @@ function createBillsArray($bills){
 		$dataArray[] = array(
 				'date'=>date('y-m-d', strtotime($item['ins_date'])),
 				'infor'=> (object) array (
+						'billId' => $item['ID'],
 						'cardCode'=>$item['card_code'],
 						'total'=>$item['total'],
 				)

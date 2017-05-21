@@ -47,6 +47,7 @@ Route::post('pay','PayController@postPayOff');
 
 Route::post('bill/all','BillController@getBills');
 Route::post('bill/complete','BillController@getBillComplete');
+Route::post('bill/detail','BillController@getBillDetail');
 		
 
 
