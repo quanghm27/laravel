@@ -19,7 +19,10 @@ class BillController extends Controller {
 			return response( $jsonString )->header ( 'Content-Type', 'application/json' );
 		}
 		// get shop bills from database
-		$bills = bill::select ('*' )->where ( 'shop_id', $shopId )->get ()->toArray ();
+		$bills = bill::select ('*' )->where ( 'shop_id', $shopId )
+									->orderBy('ins_date', 'desc')
+									->get ()
+									->toArray ();
 
 		if (empty ( $bills )) {
 			$jsonString = createResMsBill ( STATUS_EMPTY_BILLS_CODE, STATUS_EMPTY__BILLS_MSG, null );
@@ -89,16 +92,21 @@ define ( 'STATUS_EMPTY_PARAM_MSG', 'Empty shop id' );
 function createBillsArray($bills){
 
 	$dataArray = array();
-
+	
+	$endArr = array();
+	
 	// convert array from DB to json array
-	foreach ($bills as $item) {
+	foreach ($bills as $item)  {
+		
 		$dataArray[] = array(
-				'cardCode'=>$item['card_code'],
-				'total'=>$item['total'],
-				'date'=>$item['ins_date']
+				'date'=>date('y-m-d', strtotime($item['ins_date'])),
+				'infor'=> (object) array (
+						'cardCode'=>$item['card_code'],
+						'total'=>$item['total'],
+				)
 		);
 	}
-
+	
 	return $dataArray;
 }
 
