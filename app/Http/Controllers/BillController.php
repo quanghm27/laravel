@@ -12,7 +12,7 @@ class BillController extends Controller {
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function getBills(Request $req) {
-		$shopId = $req->userId;
+		$shopId = $req->shopId;
 
 		if  ($shopId == null) {
 			$jsonString = createResMsBill ( STATUS_EMPTY_PARAM_CODE, STATUS_EMPTY_PARAM_MSG, null );
@@ -40,7 +40,8 @@ class BillController extends Controller {
 		
 		$bill = DB::table('bill')
 					->where('shop_id',$shopId)
-					->orderBy('id', 'desc')
+					->groupBy('ins_date')
+					->orderBy('ins_date', 'desc')
 					->first();
 		$billId = $bill->ID;
 		$total = $bill->total;

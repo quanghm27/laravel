@@ -190,7 +190,7 @@ function insertOrder($userId, $cardCode, $total) {
 	$bill->shop_id = $user->id;
 	$bill->card_code = $cardCode;
 	$bill->total = $total;
-	$bill->ins_date = date('Y-m-d');
+	$bill->ins_date = date('Y-m-d H:i:s');
 	
 	$bill->save ();
 	return $bill->id;
