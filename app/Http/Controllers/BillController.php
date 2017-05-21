@@ -40,9 +40,9 @@ class BillController extends Controller {
 		
 		$bill = DB::table('bill')
 					->where('shop_id',$shopId)
-					->groupBy('ins_date')
 					->orderBy('ins_date', 'desc')
 					->first();
+		
 		$billId = $bill->ID;
 		$total = $bill->total;
 		$date = $bill->ins_date;
