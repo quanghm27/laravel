@@ -126,7 +126,7 @@ function createBillsArray($bills){
 	foreach ($bills as $item)  {
 		
 		$dataArray[] = array(
-				'date'=>date('y-m-d', strtotime($item['ins_date'])),
+				'date'=>date('F d, Y', strtotime($item['ins_date'])),
 				'infor'=> (object) array (
 						'billId' => $item['ID'],
 						'cardCode'=>$item['card_code'],
