@@ -40,6 +40,7 @@ Route::post('card/create', 'CardController@createCard');
 Route::post('card/delete', 'CardController@destroy');
 Route::post('card/update', 'CardController@updateCard');
 Route::post('card/all', 'CardController@getCards');
+Route::post('card/search', 'CardController@searchCards');
 
 Route::get('pay/checkCard', 'PayController@checkCardExist');
 

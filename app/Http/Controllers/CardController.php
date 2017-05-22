@@ -113,7 +113,9 @@ class CardController extends Controller {
 		$shop_id = $req->shopId;
 		// Get all card in DB
 		$dataArray = [ ];
-		$card = Card_manager::Where ( 'shop_id', '=', $shop_id )->join ( 'card', 'card_manager.card_id', '=', 'card.id' )->select ( 'card.*' )->get ();
+		$card = Card_manager::Where ( 'shop_id', '=', $shop_id )
+							->join ( 'card', 'card_manager.card_id', '=', 'card.id' )
+							->select ( 'card.*' )->get ();
 		
 		foreach ( $card as $item ) {
 			$dataArray [] = array (
@@ -128,6 +130,38 @@ class CardController extends Controller {
 		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $dataArray );
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
 	}
+	/**
+	 * 
+	 * @param Request $req
+	 */
+	public function searchCards(Request $req){
+		$shop_id = $req->shopId;
+		
+		$keyWord = $req->keyWord;
+		
+		$dataArray = [ ];
+		
+		$data = DB::table('card')
+					->join ( 'card_manager', 'card_manager.card_id', '=', 'card.id' )
+					->where('card_code', 'like', '%'.$keyWord.'%')
+					->Where ( 'shop_id', '=', $shop_id )
+					->select('card.*')
+					->get();
+		
+		foreach ( $data as $item ) {
+			$dataArray [] = array (
+					'cardId' => $item->id,
+					'cardCode' => $item->card_code,
+					'guestName' => $item->guest_name,
+					'phoneNumber' => $item->phone_number,
+					'points' => $item->points
+			);
+		}
+		
+		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, $dataArray );
+		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+	}
+	
 	
 	/**
 	 * Update the specified resource in storage.
