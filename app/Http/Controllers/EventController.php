@@ -57,7 +57,7 @@ class EventController extends Controller {
 			$bonusDetail = new bonus_detail();
 			
 			$bonusDetail->bonus_id = $bonusId;
-			$bonusDetail->bonus_point = $req->bonusPoints;
+			$bonusDetail->bonus_point = $req->bonusPoint;
 
 			$bonusDetail->save();
 		}
