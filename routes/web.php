@@ -49,7 +49,7 @@ Route::post('bill/all','BillController@getBills');
 Route::post('bill/complete','BillController@getBillComplete');
 Route::post('bill/detail','BillController@getBillDetail');
 
-Route::post('event/create','BillController@createEvent');
+Route::post('event/create','EventController@createEvent');
 		
 
 
