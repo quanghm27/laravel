@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\bonus_manager;
 use App\bonus_detail;
+use App\bonus_manager;
+use App\product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class EventController extends Controller {
 	
@@ -51,7 +52,16 @@ class EventController extends Controller {
 			}
 			
 			bonus_detail::insert($bonusDetailArr);
+		} elseif ($eventType === '2') {
+			// insert points in case type = 2
+			$bonusDetail = new bonus_detail();
+			
+			$bonusDetail->bonus_id = $bonusId;
+			$bonusDetail->bonus_point = $req->bonusPoints;
+
+			$bonusDetail->save();
 		}
+		
 		
 		$jsonString = createResMs ( SUCCESS_CODE, SUCCESS_MSG, null );
 		return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
