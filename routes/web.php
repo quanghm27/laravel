@@ -50,6 +50,8 @@ Route::post('bill/complete','BillController@getBillComplete');
 Route::post('bill/detail','BillController@getBillDetail');
 
 Route::post('event/create','EventController@createEvent');
+Route::post('event/all','EventController@getEvents');
+Route::post('event/detail','EventController@getEventDetail');
 		
 
 
