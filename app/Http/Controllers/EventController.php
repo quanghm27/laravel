@@ -12,6 +12,7 @@ class EventController extends Controller {
 	public function createEvent (Request $req) {
 		
 		$shopId = $req->shopId;
+		$eventName = $req->eventName;
 		$eventType = $req->eventType;
 		$dataArray = $req['dataArray'];
 		
@@ -22,6 +23,7 @@ class EventController extends Controller {
 		$bonus = new bonus_manager();
 		$bonus->bonus_type = $eventType;
 		$bonus->shop_id = $shopId;
+		$bonus->bonus_name = $eventName;
 		$bonus->start_date = $startDate;
 		$bonus->end_date = $endDate;
 		
