@@ -18,7 +18,17 @@ class EventController extends Controller {
 		
 		$startDate = \DateTime::createFromFormat('Y-m-d', $req->startDate);
 		$endDate = \DateTime::createFromFormat('Y-m-d', $req->endDate);
-		
+	
+		if ($eventType === '1') {
+			
+			$notExistIdArr = checkProduct($dataArray);
+			
+			if ($notExistIdArr != null) {
+				// Throw error when error product Id not null.
+				$jsonString = createResMs ( ERR_NOT_EXIST_PRODUCT_CODE, ERR_NOT_EXIST_PRODUCT_MSG, $notExistIdArr );
+				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
+			}
+		}
 		// insert event
 		$bonus = new bonus_manager();
 		$bonus->bonus_type = $eventType;
@@ -36,14 +46,6 @@ class EventController extends Controller {
 			// create new array 		
 			$bonusDetailArr = array();
 			
-			$notExistIdArr = checkProduct($dataArray);
-			
-			if ($notExistIdArr != null) {
-				// Throw error when error product Id not null.
-				$jsonString = createResMs ( ERR_NOT_EXIST_PRODUCT_CODE, ERR_NOT_EXIST_PRODUCT_MSG, $notExistIdArr );
-				return response ( $jsonString )->header ( 'Content-Type', 'application/json' );
-			}
-			
 			// product exist, insert to database
 			foreach ( $dataArray as $item) {
 				$bonusDetailArr[] = array (
@@ -52,8 +54,9 @@ class EventController extends Controller {
 					'bonus_point' => $item['bonusPoint']
 				);
 			}
-			
+			// insert batch
 			bonus_detail::insert($bonusDetailArr);
+			
 		} elseif ($eventType === '2') {
 			// insert points in case type = 2
 			$bonusDetail = new bonus_detail();
