@@ -23,6 +23,7 @@
                         <thead>
                             <tr align="center">
                                 <th>ID</th>
+								<th>Code</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
@@ -37,6 +38,7 @@
 				        <?php $stt ++ ?>
                                 <tr class="odd gradeX" align="center">
                                     <td> {{ $stt }}</td>
+									<th>{{$p->code}}</th>
                                     <td>{{$p->name}}</td>
                                     <td> <img src="{{$p->description}}" height="200" width="300"></td>
                                     <td>{{$p->price}}</td>
