@@ -49,33 +49,9 @@
                             </div>
                             <!-- /input-group -->
                         </li>
+                       
                         <li>
-                            <a href="../public"><i class="fa fa-dashboard fa-fw"></i> View Site</a>
-                        </li>
-                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> PayOff<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="admin/payOff">Thanh toan</a>
-                                </li>
-                             
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Shop<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="admin/shop">Shop List</a>
-                                </li>
-                                <li>
-                                    <a href="admin/shop/create">Add A Shop</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-cube fa-fw"></i> Product<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i>Products<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="admin/product">Product List</a>
@@ -84,39 +60,6 @@
                                     <a href="admin/product/create">Add A Product</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="admin/user/danh-sach.html">Danh Sách</a>
-                                </li>
-                                <li>
-                                    <a href="admin/user/them-user.html">Thêm User</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-cube fa-fw"></i> Slide<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="admin/slide/danh-sach.html">Danh Sách</a>
-                                </li>
-                                <li>
-                                    <a href="admin/slide/them.html">Thêm Slide</a>
-                                </li>
-                            </ul>
-                            <li>
-                            <a href="#"><i class="fa fa-users fa-fw"></i> Liên Hệ<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="admin/lien-he/danh-sach.html">Danh Sách</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
                             <!-- /.nav-second-level -->
                         </li>
                     </ul>

@@ -38,7 +38,7 @@
                                 <tr class="odd gradeX" align="center">
                                     <td> {{ $stt }}</td>
                                     <td>{{$p->name}}</td>
-                                    <td>{{$p->description}}</td>
+                                    <td> <img src="{{$p->description}}" height="200" width="300"></td>
                                     <td>{{$p->price}}</td>
                                     <td>{{$p->quantity}}</td>
                                     <td><a href="{{ route('product.edit',$p->id) }}">Edit</a></td>
