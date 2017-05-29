@@ -38,7 +38,7 @@
 				        <?php $stt ++ ?>
                                 <tr class="odd gradeX" align="center">
                                     <td> {{ $stt }}</td>
-									<th>{{$p->code}}</th>
+									<td>{{$p->code}}</td>
                                     <td>{{$p->name}}</td>
                                     <td> <img src="{{$p->description}}" height="200" width="300"></td>
                                     <td>{{$p->price}}</td>
